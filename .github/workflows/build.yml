@@ -1,4 +1,3 @@
-
 name: Build AmneziaWG
 
 on:
@@ -17,8 +16,7 @@ jobs:
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@main
         with:
--          tool-cache: false
-+          tool-cache: false
+          tool-cache: false
           android: true
           dotnet: true
           haskell: true
