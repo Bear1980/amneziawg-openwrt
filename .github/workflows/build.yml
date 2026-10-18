@@ -31,8 +31,17 @@ jobs:
 
       - name: Download and extract OpenWrt SDK
         run: |
-          # Прямая загрузка SDK 25.12.6 для mediatek/filogic
-          wget https://downloads.openwrt.org/releases/25.12.6/targets/mediatek/filogic/openwrt-sdk-25.12.6-mediatek-filogic_gcc-13.3.0_musl.Linux-x86_64.tar.bz2
+          # Скачиваем страницу каталога и находим имя архива SDK динамически
+          BASE_URL="https://downloads.openwrt.org/releases/25.12.6/targets/mediatek/filogic/"
+          SDK_FILENAME=$(curl -s "$BASE_URL" | grep -oE 'openwrt-sdk-25\.12\.6-mediatek-filogic[^"]+\.tar\.bz2' | head -n 1)
+          
+          if [ -z "$SDK_FILENAME" ]; then
+            echo "Error: Could not determine SDK filename!"
+            exit 1
+          fi
+          
+          echo "Found SDK: $SDK_FILENAME"
+          wget "$BASE_URL$SDK_FILENAME"
           tar xjf openwrt-sdk-*.tar.bz2
           mv openwrt-sdk-* sdk
 
