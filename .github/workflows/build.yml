@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-free bzip2 clang flex g++ gawk gettext git libncurses5-dev libssl-dev python3 python3-distutils rsync unzip zlib1g-dev file wget
+          sudo apt-get install -y build-essential bzip2 clang flex g++ gawk gettext git libncurses-dev libssl-dev python3 python3-distutils rsync unzip zlib1g-dev file wget
 
       - name: Download and extract OpenWrt SDK
         run: |
@@ -29,9 +29,6 @@ jobs:
           echo "src-git amneziawg https://github.com/amnezia-vpn/amneziawg-openwrt.git" >> feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a -p amneziawg
-
-          # Включаем пакеты для сборки
-          make menuconfig config=<(echo -e "CONFIG_PACKAGE_kmod-amneziawg=m\nCONFIG_PACKAGE_amneziawg-tools=m\nCONFIG_PACKAGE_luci-proto-amneziawg=m") || true
 
       - name: Build AmneziaWG
         run: |
