@@ -1,0 +1,28 @@
+name: Build AmneziaWG for Cudy WR3000U v1
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup OpenWrt SDK
+        uses: openwrt/gh-action-sdk@v1
+        env:
+          ARCH: aarch64_cortex-a53
+          SDK_URL: https://downloads.openwrt.org/releases/25.12.6/targets/mediatek/filogic/
+          FEED_NAME: amneziawg
+          PACKAGES: kmod-amneziawg amneziawg-tools luci-proto-amneziawg
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: amneziawg-cudy-wr3000u
+          path: bin/packages/aarch64_cortex-a53/amneziawg/*.ipk
